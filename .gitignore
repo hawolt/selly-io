@@ -1,0 +1,6 @@
+.idea/*
+SellyIO.iml
+config.json
+target/*
+src/test/*
+src/main/resources/*
