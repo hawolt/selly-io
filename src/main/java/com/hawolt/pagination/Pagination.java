@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Pagination<T extends SellyJson> implements ExceptionalIterable<List<T>> {
 
@@ -18,11 +21,11 @@ public class Pagination<T extends SellyJson> implements ExceptionalIterable<List
     private String location;
     private int index, total;
     private SellyRequest initial;
-    private Class<T> reference;
+    private Function<JSONObject, T> function;
 
-    public Pagination(Class<T> reference, String location, SellyRequest initial, Direction direction) {
+    public Pagination(Function<JSONObject, T> function, String location, SellyRequest initial, Direction direction) {
         this.total = initial.getTotalPages();
-        this.reference = reference;
+        this.function = function;
         this.location = location;
         this.direction = direction;
         this.initial = initial;
@@ -43,7 +46,7 @@ public class Pagination<T extends SellyJson> implements ExceptionalIterable<List
     }
 
     @Override
-    public List<T> next() throws IOException, SellyException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public List<T> next() throws IOException, SellyException {
         if (index == 1) {
             index += 1;
             return convert(initial);
@@ -54,24 +57,14 @@ public class Pagination<T extends SellyJson> implements ExceptionalIterable<List
         return convert(request);
     }
 
-    public List<T> convert(SellyRequest request) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public List<T> convert(SellyRequest request) {
         JSONArray array = new JSONArray(request.getBody());
-        List<T> list = new LinkedList<>();
-        if (direction == Direction.ASCENDING) {
-            for (int i = 0; i < array.length(); i++) {
-                list.add(create(array.getJSONObject(i)));
-            }
-        } else {
-            for (int i = array.length() - 1; i >= 0; i--) {
-                list.add(create(array.getJSONObject(i)));
-            }
-        }
-        return list;
-    }
-
-    public T create(JSONObject o) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        SellyJson json = SellyJson.class.getDeclaredConstructor(JSONObject.class).newInstance(o);
-        return (T) json.asTypeOf(reference);
+        IntStream indices = direction == Direction.ASCENDING
+                ? IntStream.range(0, array.length())
+                : IntStream.rangeClosed(array.length() - 1, 0);
+        return indices.mapToObj(array::getJSONObject)
+                .map(function::apply)
+                .collect(Collectors.toList());
     }
 
     public enum Direction {
