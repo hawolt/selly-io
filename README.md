@@ -2,11 +2,11 @@
 
 A simple to use Selly API wrapper for Java. This library makes it easy to interact with Selly in your apps.
 
-# Disclaimer
+## Disclaimer
 
 This product is not endorsed, certified or otherwise approved in any way by Selly.
 
-# Note
+## Note
 
 Current version does not automatically handle rate-limits
 
