@@ -26,6 +26,6 @@ public class Orders extends SellyResource {
 
     public Pagination<Order> getAll(Pagination.Direction direction) throws IOException, SellyException {
         SellyRequest request = SellyRequest.get(location);
-        return new Pagination<>(Order.class, location, request, direction);
+        return new Pagination<>(Order::new, location, request, direction);
     }
 }

@@ -42,6 +42,6 @@ public class Categories extends SellyResource {
 
     public Pagination<Category> getAll(Pagination.Direction direction) throws IOException, SellyException {
         SellyRequest request = SellyRequest.get(location);
-        return new Pagination<>(Category.class, location, request, direction);
+        return new Pagination<>(Category::new, location, request, direction);
     }
 }

@@ -42,6 +42,6 @@ public class Rules extends SellyResource {
 
     public Pagination<Rule> getAll(Pagination.Direction direction) throws IOException, SellyException {
         SellyRequest request = SellyRequest.get(location);
-        return new Pagination<>(Rule.class, location, request, direction);
+        return new Pagination<>(Rule::new, location, request, direction);
     }
 }

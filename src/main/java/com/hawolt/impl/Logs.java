@@ -26,6 +26,6 @@ public class Logs extends SellyResource {
 
     public Pagination<Log> getAll(Pagination.Direction direction) throws IOException, SellyException {
         SellyRequest request = SellyRequest.get(location);
-        return new Pagination<>(Log.class, location, request, direction);
+        return new Pagination<>(Log::new, location, request, direction);
     }
 }

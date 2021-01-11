@@ -42,6 +42,6 @@ public class Blacklists extends SellyResource {
 
     public Pagination<Blacklist> getAll(Pagination.Direction direction) throws IOException, SellyException {
         SellyRequest request = SellyRequest.get(location);
-        return new Pagination<>(Blacklist.class, location, request, direction);
+        return new Pagination<>(Blacklist::new, location, request, direction);
     }
 }

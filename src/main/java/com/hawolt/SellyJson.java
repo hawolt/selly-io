@@ -15,10 +15,4 @@ public class SellyJson {
     public JSONObject getOriginal() {
         return raw;
     }
-
-    public <T> T asTypeOf(Class<? extends SellyJson> o) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor constructor = o.getDeclaredConstructor(JSONObject.class);
-        return (T) constructor.newInstance(raw);
-    }
-
 }

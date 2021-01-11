@@ -42,6 +42,6 @@ public class Webhooks extends SellyResource {
 
     public Pagination<Webhook> getAll(Pagination.Direction direction) throws IOException, SellyException {
         SellyRequest request = SellyRequest.get(location);
-        return new Pagination<>(Webhook.class, location, request, direction);
+        return new Pagination<>(Webhook::new, location, request, direction);
     }
 }
