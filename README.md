@@ -21,8 +21,8 @@ Current version does not automatically handle rate-limits
 ```
 ```xml
 <repository>
-	<id>jitpack.io</id>
-	<url>https://jitpack.io</url>
+  <id>jitpack.io</id>
+  <url>https://jitpack.io</url>
 </repository>
 ```
 
